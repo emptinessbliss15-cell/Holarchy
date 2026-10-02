@@ -3,6 +3,10 @@
   "name": "holarchy",
   "main": "src/worker.js",
   "compatibility_date": "2026-10-02",
+  "vars": {
+    "SUPABASE_URL": "https://zaabghrczrbqkxrhkinj.supabase.co",
+    "SUPABASE_PUBLISHABLE_KEY": "sb_publishable_QL6Bz9m30CV8HFIdkLQ42Q_N9AFIOkF"
+  },
   "assets": {"directory": "./public", "binding": "ASSETS"},
   "durable_objects": {"bindings": [{"name": "SIGNAL_ROOMS", "class_name": "SignalRoom"}]},
   "migrations": [{"tag": "v1", "new_sqlite_classes": ["SignalRoom"]}]
