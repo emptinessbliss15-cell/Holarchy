@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "holarchy",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-02",
+  "assets": {"directory": "./public", "binding": "ASSETS"},
+  "durable_objects": {"bindings": [{"name": "SIGNAL_ROOMS", "class_name": "SignalRoom"}]},
+  "migrations": [{"tag": "v1", "new_sqlite_classes": ["SignalRoom"]}]
+}
