@@ -10,3 +10,5 @@ html,body{max-width:100%;overflow-x:hidden}main,section,form,details,.pair,.capa
 
 .profile{display:grid;gap:12px;padding:16px;border:1px solid #444;border-radius:12px}.profile-row{display:flex;align-items:center;gap:14px;min-width:0}.avatar-button{width:76px;height:76px;min-width:76px;padding:0;border-radius:50%;overflow:hidden;background:#1d1d1d;color:#aaa;font-size:2rem;border:1px solid #555}.avatar-button img{display:block;width:100%;height:100%;object-fit:cover}.avatar-button img[hidden]{display:none}.profile-fields{display:grid;gap:8px;flex:1;min-width:0}.profile-fields input{width:100%}.photo-action{display:inline-block;width:max-content;max-width:100%;padding:8px 10px;border:1px solid #555;border-radius:8px;cursor:pointer;font-weight:700;font-size:.8rem}.photo-action input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
 @media(max-width:520px){.profile{padding:12px}.profile-row{gap:10px}.avatar-button{width:64px;height:64px;min-width:64px}}
+
+.peer-avatar{width:42px;height:42px;min-width:42px;border-radius:50%;object-fit:cover;background:#222;border:1px solid #444}.peer-avatar[hidden]{display:none}
