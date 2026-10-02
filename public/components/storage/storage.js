@@ -7,7 +7,7 @@ const enabled={indexedDB:true,p2p:false,supabase:false};let ready=false;
 function emit(change){for(const listener of listeners)listener(change)}
 function event(type,node,origin="local"){return{changeId:crypto.randomUUID(),type,node,origin,timestamp:new Date().toISOString()}}
 async function migratePrototypeData(){try{const old=JSON.parse(localStorage.getItem("holarchy.nodes.v1")||"[]");if(!Array.isArray(old)||!old.length)return;const existing=new Set((await indexedDBStore.list()).map(x=>x.id));for(const node of old)if(node?.id&&!existing.has(node.id))await indexedDBStore.put(node);localStorage.removeItem("holarchy.nodes.v1")}catch{}}
-async function acceptRemote(change){if(change.type==="put"){memory.put(change.node);if(enabled.indexedDB)await indexedDBStore.put(change.node)}else if(change.type==="delete"){memory.delete(change.node.id);if(enabled.indexedDB)await indexedDBStore.delete(change.node.id)}emit({...change,origin:"p2p",timestamp:new Date().toISOString()})}
+async function acceptRemote(change){if(change.type==="peer-profile"){emit({type:"peer-profile",profile:change.profile,peerId:p2p.peerId,origin:"p2p",timestamp:new Date().toISOString()});return}if(change.type==="put"){memory.put(change.node);if(enabled.indexedDB)await indexedDBStore.put(change.node)}else if(change.type==="delete"){memory.delete(change.node.id);if(enabled.indexedDB)await indexedDBStore.delete(change.node.id)}emit({...change,origin:"p2p",timestamp:new Date().toISOString()})}
 export const storage={
  async start(){if(ready)return;await memory.start();if(enabled.indexedDB){await indexedDBStore.start();await migratePrototypeData();for(const node of await indexedDBStore.list())memory.put(node)}p2p.start({onRemoteChange:acceptRemote,onStatus:status=>emit({type:"peer-status",status,origin:"p2p",timestamp:new Date().toISOString()})});ready=true;emit({type:"ready",origin:"storage",timestamp:new Date().toISOString()})},
  subscribe(listener){listeners.add(listener);return()=>listeners.delete(listener)},list(){return memory.list()},get(id){return memory.get(id)},has(id){return memory.has(id)},
@@ -21,5 +21,6 @@ export const storage={
  async waitForPeerRendezvousAnswer(token){enabled.p2p=true;return p2p.waitForRendezvousAnswer(token)},
  async acceptPeerOffer(code){enabled.p2p=true;return p2p.acceptOffer(code)},
  async acceptPeerAnswer(code){enabled.p2p=true;await p2p.acceptAnswer(code)},
- async sendAllToPeer(){for(const node of memory.list())p2p.send(event("put",node,"local"))}
+ async sendAllToPeer(){for(const node of memory.list())p2p.send(event("put",node,"local"))},
+ sendProfileToPeer(profile){p2p.sendProfile(profile)}
 };
