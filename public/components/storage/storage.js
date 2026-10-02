@@ -16,6 +16,9 @@ export const storage={
  async setEnabled(capability,value){if(!(capability in enabled))throw new Error(`Unknown capability: ${capability}`);if(capability==="indexedDB"&&value&&!enabled.indexedDB){await indexedDBStore.start();for(const node of memory.list())await indexedDBStore.put(node)}if(capability==="indexedDB"&&!value&&enabled.indexedDB)await indexedDBStore.stop();enabled[capability]=Boolean(value);emit({type:"capability",capability,enabled:enabled[capability],origin:"storage",timestamp:new Date().toISOString()})},
  capabilities(){return{...enabled,memory:true}},
  async createPeerOffer(){enabled.p2p=true;return p2p.createOffer()},
+ async createPeerRendezvous(){enabled.p2p=true;return p2p.createRendezvous()},
+ async answerPeerRendezvous(token){enabled.p2p=true;return p2p.answerRendezvous(token)},
+ async waitForPeerRendezvousAnswer(token){enabled.p2p=true;return p2p.waitForRendezvousAnswer(token)},
  async acceptPeerOffer(code){enabled.p2p=true;return p2p.acceptOffer(code)},
  async acceptPeerAnswer(code){enabled.p2p=true;await p2p.acceptAnswer(code)},
  async sendAllToPeer(){for(const node of memory.list())p2p.send(event("put",node,"local"))}
