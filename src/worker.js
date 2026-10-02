@@ -25,6 +25,10 @@ export class SignalRoom {
 export default {
  async fetch(request,env){
    const url=new URL(request.url);
+   if(url.pathname==="/supabase-config"){
+     if(!env.SUPABASE_URL||!env.SUPABASE_PUBLISHABLE_KEY) return Response.json({error:"Supabase sync is not configured."},{status:503,headers:{"cache-control":"no-store"}});
+     return Response.json({url:env.SUPABASE_URL,key:env.SUPABASE_PUBLISHABLE_KEY},{headers:{"cache-control":"no-store"}});
+   }
    if(url.pathname==="/ice"){
      if(!env.TURN_KEY_ID||!env.TURN_KEY_API_TOKEN) return Response.json({iceServers:[{urls:"stun:stun.cloudflare.com:3478"}],turn:false},{headers:{"cache-control":"no-store"}});
      const response=await fetch("https://rtc.live.cloudflare.com/v1/turn/keys/"+env.TURN_KEY_ID+"/credentials/generate-ice-servers",{method:"POST",headers:{"authorization":"Bearer "+env.TURN_KEY_API_TOKEN,"content-type":"application/json"},body:JSON.stringify({ttl:600})});
