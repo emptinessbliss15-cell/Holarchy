@@ -10,6 +10,7 @@ export const waitForPeerRendezvousAnswer=token=>storage.waitForPeerRendezvousAns
 export const acceptPeerOffer=code=>storage.acceptPeerOffer(code);
 export const acceptPeerAnswer=code=>storage.acceptPeerAnswer(code);
 export const sendAllToPeer=()=>storage.sendAllToPeer();
+export const sendProfileToPeer=profile=>storage.sendProfileToPeer(profile);
 export function createNode({name,type="node"}){const now=new Date().toISOString();return{id:crypto.randomUUID(),name:name.trim(),type,createdAt:now,updatedAt:now}}
 export const listNodes=()=>storage.list();
 export const getNode=id=>storage.get(id);
