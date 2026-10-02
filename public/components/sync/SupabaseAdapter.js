@@ -1,6 +1,6 @@
 export class SupabaseAdapter {
-  constructor({url,key,table="holarchy_nodes"}){this.url=url;this.key=key;this.table=table;this.client=null;this.channel=null}
-  async ensureClient(){if(this.client)return this.client;const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");this.client=createClient(this.url,this.key);return this.client}
+  constructor({url,key,configUrl="/supabase-config",table="holarchy_nodes"}={}){this.url=url;this.key=key;this.configUrl=configUrl;this.table=table;this.client=null;this.channel=null}
+  async ensureClient(){if(this.client)return this.client;if(!this.url||!this.key){const response=await fetch(this.configUrl,{cache:"no-store"});if(!response.ok)throw new Error("Supabase sync is not configured.");const config=await response.json();this.url=config.url;this.key=config.key}const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");this.client=createClient(this.url,this.key);return this.client}
   async signIn(email,password){const client=await this.ensureClient();const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;return data.user}
   async signOut(){if(this.client){const {error}=await this.client.auth.signOut();if(error)throw error}await this.stop()}
   async user(){const client=await this.ensureClient();const {data:{user}}=await client.auth.getUser();return user}
