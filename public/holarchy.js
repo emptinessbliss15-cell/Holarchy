@@ -1,28 +1,15 @@
 import { storage } from "./components/storage/storage.js";
 
-export function createNode({ name, type = "node" }) {
-  const now = new Date().toISOString();
-  return {
-    id: crypto.randomUUID(),
-    name: name.trim(),
-    type,
-    createdAt: now,
-    updatedAt: now
-  };
-}
+export const startHolarchy=()=>storage.start();
+export const subscribe=listener=>storage.subscribe(listener);
+export const storageCapabilities=()=>storage.capabilities();
+export const setStorageCapability=(name,enabled)=>storage.setEnabled(name,enabled);
 
-export function listNodes() {
-  return storage.list();
+export function createNode({name,type="node"}){
+  const now=new Date().toISOString();
+  return {id:crypto.randomUUID(),name:name.trim(),type,createdAt:now,updatedAt:now};
 }
-
-export function getNode(id) {
-  return storage.get(id);
-}
-
-export function addNode(input) {
-  return storage.put(createNode(input));
-}
-
-export function removeNode(id) {
-  return storage.delete(id);
-}
+export const listNodes=()=>storage.list();
+export const getNode=id=>storage.get(id);
+export const addNode=input=>storage.put(createNode(input));
+export const removeNode=id=>storage.delete(id);
