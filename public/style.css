@@ -17,3 +17,5 @@ html,body{max-width:100%;overflow-x:hidden}main,section,form,details,.pair,.capa
 @media(max-width:520px){.collapsible-panel{padding:12px;margin-top:14px}}
 
 .supabase-auth{display:grid;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid #333}.supabase-auth>small{opacity:.7}.supabase-auth>div{display:grid;grid-template-columns:1fr 1fr auto;gap:7px}.supabase-auth .wide{width:auto}@media(max-width:600px){.supabase-auth>div{grid-template-columns:1fr}.supabase-auth button{width:100%}}
+
+.eb-auth{display:grid;gap:8px}.eb-auth-login{display:grid;grid-template-columns:1fr 1fr auto;gap:7px;padding:0;border:0;border-radius:0;margin:0}.eb-auth-account{display:flex;align-items:center;justify-content:space-between;gap:8px}.eb-auth-account[hidden],.eb-auth-login[hidden]{display:none}.sync-actions{display:flex;align-items:center;gap:10px;margin-top:8px}.sync-actions .wide,.eb-auth .wide{width:auto}.sync-actions small{opacity:.7}@media(max-width:600px){.eb-auth-login{grid-template-columns:1fr}.eb-auth-account{align-items:stretch;flex-direction:column}.sync-actions{align-items:stretch;flex-direction:column}.sync-actions button{width:100%}}
