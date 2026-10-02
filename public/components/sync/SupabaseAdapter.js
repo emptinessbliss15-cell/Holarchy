@@ -1,8 +1,11 @@
 export class SupabaseAdapter {
   constructor({url,key,table="holarchy_nodes"}){this.url=url;this.key=key;this.table=table;this.client=null;this.channel=null}
+  async ensureClient(){if(this.client)return this.client;const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");this.client=createClient(this.url,this.key);return this.client}
+  async signIn(email,password){const client=await this.ensureClient();const {data,error}=await client.auth.signInWithPassword({email,password});if(error)throw error;return data.user}
+  async signOut(){if(this.client){const {error}=await this.client.auth.signOut();if(error)throw error}await this.stop()}
+  async user(){const client=await this.ensureClient();const {data:{user}}=await client.auth.getUser();return user}
   async start({onRemoteChange}={}){
-    const {createClient}=await import("https://esm.sh/@supabase/supabase-js@2");
-    this.client=createClient(this.url,this.key);
+    await this.ensureClient();
     const {data:{session}}=await this.client.auth.getSession();
     if(!session)throw new Error("Supabase sync requires authentication.");
     const {data,error}=await this.client.from(this.table).select("*").is("deleted_at",null);if(error)throw error;
