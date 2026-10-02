@@ -9,6 +9,7 @@ export class P2PAdapter {
   start({onRemoteChange,onStatus}={}){this.onRemoteChange=onRemoteChange;this.onStatus=onStatus}
   stop(){this.channel?.close();this.pc?.close();this.reset();this.onStatus?.("off")}
   send(change){if(this.channel?.readyState==="open")this.channel.send(JSON.stringify(change))}
+  sendProfile(profile){this.send({type:"peer-profile",profile})}
   async loadIceServers(){try{const r=await fetch("/ice",{cache:"no-store"});const data=r.ok?await r.json():null;if(Array.isArray(data?.iceServers)&&data.iceServers.length)this.iceServers=data.iceServers;this.log("ice:servers",{ok:r.ok,status:r.status,turn:Boolean(data?.turn),servers:this.iceServers.map(s=>({urls:s.urls,hasCredentials:Boolean(s.username||s.credential)}))})}catch(error){this.log("ice:servers:error",{message:error.message})}}
   makePeer(){const pc=new RTCPeerConnection({iceServers:this.iceServers});
 pc.ondatachannel=e=>{this.log("datachannel:received",{label:e.channel.label});this.channel=e.channel;this.bindChannel(this.channel)};
