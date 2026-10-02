@@ -1,0 +1,1 @@
+{"name":"holarchy-hyperswarm","private":true,"type":"module","scripts":{"p2p":"node public/components/sync/hyperswarm-demo.js"},"dependencies":{"b4a":"^1.6.7","hypercore-crypto":"^3.6.1","hyperswarm":"^4.17.1"}}
