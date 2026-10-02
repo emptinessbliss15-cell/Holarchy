@@ -25,6 +25,13 @@ export class SignalRoom {
 export default {
  async fetch(request,env){
    const url=new URL(request.url);
+   if(url.pathname==="/ice"){
+     if(!env.TURN_KEY_ID||!env.TURN_KEY_API_TOKEN) return Response.json({iceServers:[{urls:"stun:stun.cloudflare.com:3478"}],turn:false},{headers:{"cache-control":"no-store"}});
+     const response=await fetch("https://rtc.live.cloudflare.com/v1/turn/keys/"+env.TURN_KEY_ID+"/credentials/generate-ice-servers",{method:"POST",headers:{"authorization":"Bearer "+env.TURN_KEY_API_TOKEN,"content-type":"application/json"},body:JSON.stringify({ttl:600})});
+     if(!response.ok) return Response.json({error:"TURN credential generation failed",status:response.status},{status:502,headers:{"cache-control":"no-store"}});
+     const data=await response.json();
+     return Response.json({...data,turn:true},{headers:{"cache-control":"no-store"}});
+   }
    if(url.pathname.startsWith("/signal/")){
      const token=url.pathname.slice(8);
      if(!/^[a-zA-Z0-9_-]{16,128}$/.test(token)) return new Response("Bad signal token",{status:400});
