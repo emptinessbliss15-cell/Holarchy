@@ -3,6 +3,7 @@ export const startHolarchy=()=>storage.start();
 export const subscribe=listener=>storage.subscribe(listener);
 export const storageCapabilities=()=>storage.capabilities();
 export const setStorageCapability=(name,enabled)=>storage.setEnabled(name,enabled);
+export const syncSupabase=()=>storage.syncSupabase();
 export const createPeerOffer=()=>storage.createPeerOffer();
 export const createPeerRendezvous=()=>storage.createPeerRendezvous();
 export const answerPeerRendezvous=token=>storage.answerPeerRendezvous(token);
